@@ -1,3 +1,6 @@
+#python
+*.pyc
+
 #os lint
 *.DS_Store
 
