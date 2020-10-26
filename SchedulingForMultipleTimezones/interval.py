@@ -58,7 +58,10 @@ class Interval:
         except NegativeRangeError:
             return None
 
-    def __or__(self, other: Interval) -> Interval:
+    def __or__(self, other: Optional[Interval]) -> Interval:
+        """Union of two intervals is always an interval if they intersect."""
+        if other is None:
+            return self
         if self & other is not None:
             return Interval(start=min(self.start, other.start), end=max(self.end, other.end))
         else:
