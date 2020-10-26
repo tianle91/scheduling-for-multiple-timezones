@@ -6,10 +6,10 @@ from typing import Optional
 class NegativeRangeError(Exception):
     pass
 
-
 class Interval:
 
     def __init__(self, start, end):
+        """Closed interval. Can be degenerate where start==end."""
         if end < start:
             # also raises errors for end, start comparison checks
             raise NegativeRangeError
