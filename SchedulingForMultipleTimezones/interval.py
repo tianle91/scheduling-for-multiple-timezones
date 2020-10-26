@@ -38,7 +38,7 @@ class Interval:
 
     def __contains__(self, item) -> bool:
         """Interval can contain other intervals or an element."""
-        if isinstance(item, Interval):
+        if isinstance(item, Interval) and item.itemtype == self.itemtype:
             return self.start <= item.start and item.end <= self.end
         elif isinstance(item, self.itemtype):
             return self.start <= item and item <= self.end
