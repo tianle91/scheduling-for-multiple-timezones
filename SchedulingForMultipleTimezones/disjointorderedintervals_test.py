@@ -17,6 +17,11 @@ from SchedulingForMultipleTimezones.interval import Interval
         id='left interval intersects with right interval'
     ),
     pytest.param(
+        Interval(0, 2), Interval(2, 3),
+        DisjointOrderedIntervals([Interval(0, 2)]),
+        id='left interval intersects with right interval at one point'
+    ),
+    pytest.param(
         Interval(0, 3), Interval(1, 2),
         DisjointOrderedIntervals([Interval(0, 1), Interval(2, 3)]),
         id='left interval is strict superset of right interval'
