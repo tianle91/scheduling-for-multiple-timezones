@@ -11,15 +11,13 @@ class AmbiguousTypeError(Exception):
     pass
 
 
-class NotOverlappingEndpointsError(Exception):
-    pass
-
-
 class NotStrictSubintervalError(Exception):
     pass
 
+
 class NotAlignedIntervalsError(Exception):
     pass
+
 
 class Interval:
 
@@ -69,12 +67,11 @@ class Interval:
     def __sub__(self, other: Interval) -> Interval:
         if other not in self:
             raise NotStrictSubintervalError
-        # self & other == other. check for endpoints alignment.
         if other.start == self.start:
             return Interval(other.end, self.end)
         if other.end == self.end:
             return Interval(self.start, other.start)
-        raise NotOverlappingEndpointsError
+        raise NotAlignedIntervalsError
 
 
 def is_disjoint_ordered(intervals: list[Interval]) -> bool:
@@ -90,7 +87,7 @@ def get_left_interval_minus_right(left: Interval, right: Interval) -> DisjointOr
     """return left - right"""
     try:
         intervals = [left - right]
-    except NotOverlappingEndpointsError:
+    except NotAlignedIntervalsError:
         intervals = [Interval(left.start, right.start), Interval(right.end, left.end)]
     return DisjointOrderedIntervals([interval for interval in intervals if interval is not None])
 
