@@ -76,7 +76,7 @@ def is_disjoint_ordered(intervals: list[Interval]) -> bool:
     return True
 
 
-def get_difference_intervals(left: Interval, right: Interval) -> DisjointOrderedIntervals:
+def get_left_interval_minus_right(left: Interval, right: Interval) -> DisjointOrderedIntervals:
     """return left - right"""
     # this guy only works for intervals where one is superset of another!!!
     try:
