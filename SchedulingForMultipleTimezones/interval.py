@@ -12,6 +12,8 @@ class AmbiguousTypeError(Exception):
 class NotOverlappingEndpointsError(Exception):
     pass
 
+class NotStrictSubintervalError(Exception):
+    pass
 
 class Interval:
 
@@ -53,17 +55,13 @@ class Interval:
             return None
 
     def __sub__(self, other: Interval) -> Interval:
-        intersection = self & other
-        if intersection is None or intersection not in [self, other]:
-            raise NotOverlappingEndpointsError
-        if intersection == self:
-            return None
-        # then self is superset of other
+        if other not in self:
+            raise NotStrictSubintervalError
+        # self & other == other. check for endpoints alignment.
         if other.start == self.start:
             return Interval(other.end, self.end)
         if other.end == self.end:
             return Interval(self.start, other.start)
-        # then self is superset of other without overlapping endpoints
         raise NotOverlappingEndpointsError
 
 
@@ -78,12 +76,11 @@ def is_disjoint_ordered(intervals: list[Interval]) -> bool:
 
 def get_left_interval_minus_right(left: Interval, right: Interval) -> DisjointOrderedIntervals:
     """return left - right"""
-    # this guy only works for intervals where one is superset of another!!!
     try:
         intervals = [left - right]
     except NotOverlappingEndpointsError:
         intervals = [Interval(left.start, right.start), Interval(right.end, left.end)]
-    return DisjointOrderedIntervals(intervals)
+    return DisjointOrderedIntervals([interval for interval in intervals if interval is not None])
 
 def get_disjoint_ordered_intervals(intervals: list[Interval]) -> DisjointOrderedIntervals:
     if len(intervals) == 1:
