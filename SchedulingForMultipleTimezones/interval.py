@@ -22,7 +22,7 @@ class NotAlignedIntervalsError(Exception):
 class Interval:
 
     def __init__(self, start, end) -> None:
-        """Closed interval. Can be degenerate where start==end."""
+        """Closed finite interval. Can be degenerate where start==end."""
         if end < start:
             # also raises errors for end, start comparison checks
             raise NegativeRangeError
