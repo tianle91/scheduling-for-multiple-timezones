@@ -107,6 +107,3 @@ class DisjointOrderedIntervals:
 
     def __sub__(self, other: DisjointOrderedIntervals) -> DisjointOrderedIntervals:
         raise NotImplementedError
-
-if __name__ == '__main__':
-    print ()
