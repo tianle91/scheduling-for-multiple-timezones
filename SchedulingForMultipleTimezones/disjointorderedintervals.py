@@ -34,17 +34,16 @@ def get_left_interval_minus_right(left: Interval, right: Interval) -> Optional[D
 
 
 def get_disjoint_ordered_intervals(intervals: list[Interval]) -> DisjointOrderedIntervals:
-    if len(intervals) == 1:
-        resl = intervals[0]
-    else:
-        left_interval = intervals[0]
-        left_intersected = False
+    if len(intervals) > 1:
+        candidate_interval = intervals[0]
         resl = []
         for interval in get_disjoint_ordered_intervals(intervals[1:]).intervals:
-            if interval & left_interval is not None:
-                left_intersected = True
-                # ???
-    return DisjointOrderedIntervals(resl)
+            # we're guaranteed intervals will be disjoint and increasing
+            # ???
+            pass
+        raise NotImplementedError
+    else:
+        return DisjointOrderedIntervals([intervals[0]])
 
 
 class NotDisjointOrderedError(Exception):
