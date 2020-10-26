@@ -6,11 +6,16 @@ from SchedulingForMultipleTimezones.interval import Interval, NotAlignedInterval
 
 
 def is_disjoint_ordered(intervals: list[Interval]) -> bool:
-    prev_end = None
-    for interval in sorted(intervals):
+    prev_start, prev_end = None, None
+    for interval in intervals:
+        if not isinstance(interval, Interval):
+            raise TypeError
+        if prev_start is not None and not interval.start > prev_start:
+            return False
         if prev_end is not None and not interval.start > prev_end:
             return False
-        prev_end = interval.end
+        # now we know interval.start > prev_start and interval.start > prev_end
+        prev_start, prev_end = interval.start, interval.end
     return True
 
 
