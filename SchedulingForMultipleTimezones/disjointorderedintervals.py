@@ -14,8 +14,11 @@ def is_disjoint_ordered(intervals: list[Interval]) -> bool:
     return True
 
 
-def get_left_interval_minus_right(left: Interval, right: Interval) -> DisjointOrderedIntervals:
-    """return left - right"""
+def get_left_interval_intersection_right_complement(left: Interval, right: Interval) -> DisjointOrderedIntervals:
+    """return left intersection right complement"""
+    # TODO: case where left not strict superset of right
+    if not right in left:
+        raise NotImplementedError
     try:
         intervals = [left - right]
     except NotAlignedIntervalsError:
