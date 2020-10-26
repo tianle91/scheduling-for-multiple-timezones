@@ -40,10 +40,19 @@ def test_equality(interval):
     pytest.param(left, a_right, a_intersect, id='Case A'),
     pytest.param(left, b_right, b_intersect, id='Case B'),
     pytest.param(left, c_right, c_intersect, id='Case C'),
+    pytest.param(Interval(0, 1), Interval(1, 2), Interval(1, 1), id='Point Intersection'),
 ])
 def test_and(interval0, interval1, intervalexpected):
     assert interval0 & interval1 == intervalexpected
     assert interval1 & interval0 == intervalexpected
+
+
+@pytest.mark.parametrize("interval0, interval1", [
+    pytest.param(Interval(0, 1), Interval(2, 3)),
+])
+def test_and_none(interval0, interval1):
+    assert interval0 & interval1 is None
+    assert interval1 & interval0 is None
 
 
 @pytest.mark.parametrize("interval0, interval1, intervalexpected", [
