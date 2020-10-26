@@ -17,7 +17,7 @@ class Interval:
         self.end = end
 
     def __str__(self):
-        return '{} --> {}'.format(self.start, self.end)
+        return '[{}, {}]'.format(self.start, self.end)
 
     def __eq__(self, other: Interval) -> bool:
         return self.start == other.start and other.end == other.end
