@@ -6,14 +6,18 @@ from typing import Optional
 class NegativeRangeError(Exception):
     pass
 
+
 class AmbiguousTypeError(Exception):
     pass
+
 
 class NotOverlappingEndpointsError(Exception):
     pass
 
+
 class NotStrictSubintervalError(Exception):
     pass
+
 
 class Interval:
 
@@ -81,6 +85,7 @@ def get_left_interval_minus_right(left: Interval, right: Interval) -> DisjointOr
     except NotOverlappingEndpointsError:
         intervals = [Interval(left.start, right.start), Interval(right.end, left.end)]
     return DisjointOrderedIntervals([interval for interval in intervals if interval is not None])
+
 
 def get_disjoint_ordered_intervals(intervals: list[Interval]) -> DisjointOrderedIntervals:
     if len(intervals) == 1:
