@@ -22,16 +22,3 @@ class DateTimeInterval(Interval):
         while now <= self.end:
             yield now
             now += step
-
-
-class DateTimeIntervals:
-
-    def __init__(self, dtranges: set[DateTimeInterval]):
-        """Construct a minimal disjoint ordered set of intervals"""
-        self.dtranges = dtranges
-
-    def intersection(self, other: DateTimeInterval) -> DateTimeInterval:
-        pass
-
-    def union(self, other: DateTimeInterval) -> DateTimeInterval:
-        pass
