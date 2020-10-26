@@ -3,7 +3,7 @@ import pytest
 from SchedulingForMultipleTimezones.interval import (DisjointOrderedIntervals,
                                                      Interval,
                                                      NegativeRangeError,
-                                                     get_left_interval_minus_right, get_disjoint_ordered_intervals)
+                                                     get_left_interval_minus_right)
 
 # assume wlog that l.start <= r.start
 left = Interval(0, 2)
