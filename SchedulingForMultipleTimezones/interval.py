@@ -6,6 +6,8 @@ from typing import Optional
 class NegativeRangeError(Exception):
     pass
 
+class AmbiguousTypeError(Exception):
+    pass
 
 class NotOverlappingEndpointsError(Exception):
     pass
@@ -18,6 +20,10 @@ class Interval:
         if end < start:
             # also raises errors for end, start comparison checks
             raise NegativeRangeError
+        if type(end) != type(start):
+            raise AmbiguousTypeError
+        else:
+            self.itemtype = type(start)
         self.start = start
         self.end = end
 
@@ -31,10 +37,13 @@ class Interval:
         return self.start < other.start
 
     def __contains__(self, item) -> bool:
+        """Interval can contain other intervals or an element."""
         if isinstance(item, Interval):
             return self.start <= item.start and item.end <= self.end
-        else:
+        elif isinstance(item, self.itemtype):
             return self.start <= item and item <= self.end
+        else:
+            raise TypeError('item is: {} but self.itemtype is: {}'.format(type(item), self.itemtype))
 
     def __and__(self, other: Interval) -> Optional[Interval]:
         """Intersection of two intervals is always an interval."""
