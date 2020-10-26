@@ -61,7 +61,7 @@ class Interval:
     def __or__(self, other: Interval) -> Interval:
         """Union of two intervals is always an interval if they intersect."""
         if other is None:
-            return ValueError()
+            raise ValueError()
         if self & other is None:
             raise NotAlignedIntervalsError
         else:
