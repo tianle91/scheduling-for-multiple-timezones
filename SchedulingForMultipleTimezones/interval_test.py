@@ -2,20 +2,23 @@ import pytest
 
 from SchedulingForMultipleTimezones.interval import Interval, NegativeRangeError, NotAlignedIntervalsError
 
-# assume wlog that l.start <= r.start
+# cases assume wlog that l.start <= r.start
 left = Interval(0, 2)
+
 # Case A
 # [--l--]
 # [-r-]
 a_right = Interval(0, 1)
 a_intersect = a_right
 a_union = left
+
 # Case B
 # [--l--]
 #   [-r-]
 b_right = Interval(1, 2)
 b_intersect = b_right
 b_union = left
+
 # Case C
 # [--l--]
 #   [--r--]
