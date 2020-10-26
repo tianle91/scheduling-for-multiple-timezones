@@ -14,24 +14,18 @@ def is_disjoint_ordered(intervals: list[Interval]) -> bool:
     return True
 
 
-def get_left_interval_intersection_right_complement(
-        left: Interval, right: Interval
-) -> Optional[DisjointOrderedIntervals]:
+def get_left_interval_minus_right(left: Interval, right: Interval) -> Optional[DisjointOrderedIntervals]:
     """return left intersection right complement"""
     intersection = right & left
     if intersection is None:
-        return None
-    if right in left:
+        return DisjointOrderedIntervals([left])
+    else:
         try:
-            intervals = [left - right]
+            # A & B^C = A & (A & B)^C
+            intervals = [left - intersection]
         except NotAlignedIntervalsError:
             intervals = [Interval(left.start, right.start), Interval(right.end, left.end)]
         return DisjointOrderedIntervals([interval for interval in intervals if interval is not None])
-    else:
-        # case where left not strict superset of right
-        intervals_left = get_left_interval_intersection_right_complement(left, intersection).intervals
-        intervals_right = get_left_interval_intersection_right_complement(right, intersection).intervals
-        return DisjointOrderedIntervals([interval for interval in intervals_left + intervals_right if interval is not None])
 
 
 def get_disjoint_ordered_intervals(intervals: list[Interval]) -> DisjointOrderedIntervals:
