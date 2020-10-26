@@ -30,6 +30,9 @@ class Interval:
     def __lt__(self, other: Interval) -> bool:
         return self.start < other.start
 
+    def __contains__(self, item) -> bool:
+        return self.start <= item and item <= self.end
+
     def __and__(self, other: Interval) -> Optional[Interval]:
         """Intersection of two intervals is always an interval."""
         try:
@@ -52,15 +55,6 @@ class Interval:
         raise NotOverlappingEndpointsError
 
 
-def get_difference_intervals(left: Interval, right: Interval) -> list[Interval]:
-    """return left - right"""
-    try:
-        intervals = [left - right]
-    except NotOverlappingEndpointsError:
-        intervals = [Interval(left.start, right.start), Interval(right.end, left.end)]
-    return intervals
-
-
 def is_disjoint_ordered(intervals: list[Interval]) -> bool:
     prev_end = None
     for interval in sorted(intervals):
@@ -68,6 +62,15 @@ def is_disjoint_ordered(intervals: list[Interval]) -> bool:
             return False
         prev_end = interval.end
     return True
+
+
+def get_difference_intervals(left: Interval, right: Interval) -> DisjointOrderedIntervals:
+    """return left - right"""
+    try:
+        intervals = [left - right]
+    except NotOverlappingEndpointsError:
+        intervals = [Interval(left.start, right.start), Interval(right.end, left.end)]
+    return DisjointOrderedIntervals(intervals)
 
 
 class NotDisjointOrderedError(Exception):
@@ -80,3 +83,25 @@ class DisjointOrderedIntervals:
         if not is_disjoint_ordered(intervals):
             raise NotDisjointOrderedError
         self.intervals = intervals
+
+    def __len__(self):
+        return len(self.intervals)
+
+    def __str__(self) -> str:
+        return 'Union of {size}: {content}'.format(
+            size=len(self),
+            content=', '.join(str(interval) for interval in self.intervals),
+        )
+
+    def __eq__(self, other: DisjointOrderedIntervals) -> bool:
+        return self.intervals == other.intervals
+
+    def __lt__(self, other: Interval) -> bool:
+        return self.intervals[0].start < other.intervals[0].start
+
+    def __contains__(self, item) -> bool:
+        return any(item in interval for interval in self.intervals)
+
+
+if __name__ == '__main__':
+    print ()

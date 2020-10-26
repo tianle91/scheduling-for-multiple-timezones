@@ -1,6 +1,9 @@
 import pytest
 
-from SchedulingForMultipleTimezones.interval import Interval, NegativeRangeError
+from SchedulingForMultipleTimezones.interval import (DisjointOrderedIntervals,
+                                                     Interval,
+                                                     NegativeRangeError,
+                                                     get_difference_intervals)
 
 # assume wlog that l.start <= r.start
 left = Interval(0, 2)
@@ -41,3 +44,8 @@ def test_equality(interval):
 def test_rand(interval0, interval1, intervalexpected):
     assert interval0 & interval1 == intervalexpected
     assert interval1 & interval0 == intervalexpected
+
+
+def test_get_difference_intervals():
+    expected = DisjointOrderedIntervals([Interval(0, 1), Interval(2, 3)])
+    assert get_difference_intervals(Interval(0, 3), Interval(1, 2)) == expected
