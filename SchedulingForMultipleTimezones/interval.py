@@ -102,6 +102,11 @@ class DisjointOrderedIntervals:
     def __contains__(self, item) -> bool:
         return any(item in interval for interval in self.intervals)
 
+    def __and__(self, other: DisjointOrderedIntervals) -> Optional[DisjointOrderedIntervals]:
+        raise NotImplementedError
+
+    def __sub__(self, other: DisjointOrderedIntervals) -> DisjointOrderedIntervals:
+        raise NotImplementedError
 
 if __name__ == '__main__':
     print ()
