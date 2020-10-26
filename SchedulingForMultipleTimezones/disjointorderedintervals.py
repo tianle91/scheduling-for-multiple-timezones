@@ -80,5 +80,14 @@ class DisjointOrderedIntervals:
     def __and__(self, other: DisjointOrderedIntervals) -> Optional[DisjointOrderedIntervals]:
         raise NotImplementedError
 
+    def __or__(self, other: DisjointOrderedIntervals) -> DisjointOrderedIntervals:
+        """Union of two intervals is always an interval if they intersect."""
+        if other is None:
+            raise ValueError()
+        # if self & other is None:
+        #     raise NotAlignedIntervalsError
+        else:
+            return get_disjoint_ordered_intervals(self.intervals + other.intervals)
+
     def __sub__(self, other: DisjointOrderedIntervals) -> DisjointOrderedIntervals:
         raise NotImplementedError
