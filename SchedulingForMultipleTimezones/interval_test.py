@@ -1,6 +1,6 @@
 import pytest
 
-from SchedulingForMultipleTimezones.interval import Interval, NegativeRangeError
+from SchedulingForMultipleTimezones.interval import Interval, NegativeRangeError, NotAlignedIntervalsError
 
 # assume wlog that l.start <= r.start
 left = Interval(0, 2)
@@ -54,3 +54,8 @@ def test_and(interval0, interval1, intervalexpected):
 def test_or(interval0, interval1, intervalexpected):
     assert interval0 | interval1 == intervalexpected
     assert interval1 | interval0 == intervalexpected
+
+
+def test_or_notaligned_intervals_error():
+    with pytest.raises(NotAlignedIntervalsError):
+        Interval(0, 1) | Interval (2, 3)
