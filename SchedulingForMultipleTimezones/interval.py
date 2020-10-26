@@ -28,7 +28,7 @@ class Interval:
         if end < start:
             # also raises errors for end, start comparison checks
             raise NegativeRangeError
-        if type(end) != type(start):
+        if type(end) != type(start) or end is None or start is None:
             raise AmbiguousTypeError
         else:
             self.itemtype = type(start)
