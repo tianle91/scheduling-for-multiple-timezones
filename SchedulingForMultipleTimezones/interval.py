@@ -31,7 +31,10 @@ class Interval:
         return self.start < other.start
 
     def __contains__(self, item) -> bool:
-        return self.start <= item and item <= self.end
+        if isinstance(item, Interval):
+            return self.start <= item.start and item.end <= self.end
+        else:
+            return self.start <= item and item <= self.end
 
     def __and__(self, other: Interval) -> Optional[Interval]:
         """Intersection of two intervals is always an interval."""
@@ -66,11 +69,25 @@ def is_disjoint_ordered(intervals: list[Interval]) -> bool:
 
 def get_difference_intervals(left: Interval, right: Interval) -> DisjointOrderedIntervals:
     """return left - right"""
+    # this guy only works for intervals where one is superset of another!!!
     try:
         intervals = [left - right]
     except NotOverlappingEndpointsError:
         intervals = [Interval(left.start, right.start), Interval(right.end, left.end)]
     return DisjointOrderedIntervals(intervals)
+
+def get_disjoint_ordered_intervals(intervals: list[Interval]) -> DisjointOrderedIntervals:
+    if len(intervals) == 1:
+        resl = intervals[0]
+    else:
+        left_interval = intervals[0]
+        left_intersected = False
+        resl = []
+        for interval in get_disjoint_ordered_intervals(intervals[1:]).intervals:
+            if interval & left_interval is not None:
+                left_intersected = True
+                # ???
+    return DisjointOrderedIntervals(resl)
 
 
 class NotDisjointOrderedError(Exception):
@@ -80,6 +97,7 @@ class NotDisjointOrderedError(Exception):
 class DisjointOrderedIntervals:
 
     def __init__(self, intervals: list[Interval]) -> None:
+        intervals = sorted(intervals)
         if not is_disjoint_ordered(intervals):
             raise NotDisjointOrderedError
         self.intervals = intervals
