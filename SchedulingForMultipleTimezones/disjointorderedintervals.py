@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import Optional
 
-from SchedulingForMultipleTimezones.interval import Interval, NotAlignedIntervalsError
+from SchedulingForMultipleTimezones.interval import (Interval,
+                                                     NotAlignedIntervalsError)
 
 
 def is_disjoint_ordered(intervals: list[Interval]) -> bool:

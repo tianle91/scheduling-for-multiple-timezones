@@ -1,6 +1,8 @@
 import pytest
 
-from SchedulingForMultipleTimezones.interval import Interval, NegativeRangeError, NotAlignedIntervalsError
+from SchedulingForMultipleTimezones.interval import (Interval,
+                                                     NegativeRangeError,
+                                                     NotAlignedIntervalsError)
 
 # cases assume wlog that l.start <= r.start
 left = Interval(0, 2)
