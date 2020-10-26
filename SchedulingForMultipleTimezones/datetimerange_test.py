@@ -48,11 +48,7 @@ def test_equality(dtrange):
     pytest.param(left, a_right, a_intersect, id='Case A'),
     pytest.param(left, b_right, b_intersect, id='Case B'),
     pytest.param(left, c_right, c_intersect, id='Case C'),
-    pytest.param(a_right, left, a_intersect, id='Case A swapped'),
-    pytest.param(b_right, left, b_intersect, id='Case B swapped'),
-    pytest.param(c_right, left, c_intersect, id='Case C swapped'),
 ])
-def test_intersection(dtrange0, dtrange1, dtexpected):
-    print(dtrange0.intersection(dtrange1))
-    print(dtexpected)
-    assert dtrange0.intersection(dtrange1) == dtexpected
+def test_rand(dtrange0, dtrange1, dtexpected):
+    assert dtrange0 & dtrange1 == dtexpected
+    assert dtrange1 & dtrange0 == dtexpected

@@ -27,7 +27,7 @@ class Interval:
     def __eq__(self, other: Interval) -> bool:
         return self.start == other.start and other.end == other.end
 
-    def intersection(self, other: Interval) -> Optional[Interval]:
+    def __and__(self, other: Interval) -> Optional[Interval]:
         """Intersection of two intervals is always an interval."""
         try:
             return Interval(start=max(self.start, other.start), end=min(self.end, other.end))
@@ -49,15 +49,13 @@ class DateTimeInterval(Interval):
             now += step
 
 
-def get_min_ordered_disjoint_covering(list_of_intervals: list[Interval]):
-    out_l = []
-    if len(list_of_intervals) == 1:
-        out_l = list_of_intervals[0]
+def get_min_ordered_disjoint_covering(intervals: list[Interval]):
+    if len(intervals) == 1:
+        return [intervals[0]]
     else:
-        interval = list_of_intervals[0]
-        sub_l = get_min_ordered_disjoint_covering(list_of_intervals[1:])
-        out_l = None
-    return out_l
+        interval = intervals[0]
+        other_coverings = get_min_ordered_disjoint_covering(intervals[1:])
+        intersecting_coverings = [i for i in other_coverings if i.intersection(interval) is not None]
 
 
 class DateTimeIntervals:
