@@ -3,7 +3,8 @@ from datetime import datetime
 import pytest
 import pytz
 
-from SchedulingForMultipleTimezones.datetimerange import DateTimeInterval, NegativeRangeError
+from SchedulingForMultipleTimezones.datetimerange import DateTimeInterval
+from SchedulingForMultipleTimezones.interval import NegativeRangeError
 
 a_few_timezones = pytz.all_timezones[:10]
 
