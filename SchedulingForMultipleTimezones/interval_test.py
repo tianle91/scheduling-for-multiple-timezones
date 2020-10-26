@@ -56,6 +56,11 @@ def test_or(interval0, interval1, intervalexpected):
     assert interval1 | interval0 == intervalexpected
 
 
+def test_or_valueerror():
+    with pytest.raises(ValueError):
+        Interval(0, 1) | None
+
+
 def test_or_notaligned_intervals_error():
     with pytest.raises(NotAlignedIntervalsError):
         Interval(0, 1) | Interval (2, 3)
