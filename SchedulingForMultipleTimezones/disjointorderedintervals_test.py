@@ -27,6 +27,7 @@ from SchedulingForMultipleTimezones.interval import Interval
 def test_is_disjoint_ordered(intervals, expected):
     assert is_disjoint_ordered(intervals) == expected
 
+
 @pytest.mark.parametrize("left, right, expected", [
     pytest.param(
         Interval(0, 1), Interval(2, 3),
@@ -51,6 +52,7 @@ def test_is_disjoint_ordered(intervals, expected):
 ])
 def test_get_left_interval_minus_right(left, right, expected):
     assert get_left_interval_minus_right(left, right) == expected
+
 
 def test_get_disjoint_ordered_intervals():
     intervals = [Interval(0, 2), Interval(1, 3)]
