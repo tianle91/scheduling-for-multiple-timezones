@@ -18,6 +18,8 @@ class NotOverlappingEndpointsError(Exception):
 class NotStrictSubintervalError(Exception):
     pass
 
+class NotAlignedIntervalsError(Exception):
+    pass
 
 class Interval:
 
@@ -57,6 +59,12 @@ class Interval:
             return Interval(start=max(self.start, other.start), end=min(self.end, other.end))
         except NegativeRangeError:
             return None
+
+    def __or__(self, other: Interval) -> Interval:
+        if self & other is not None:
+            return Interval(start=min(self.start, other.start), end=max(self.end, other.end))
+        else:
+            raise NotAlignedIntervalsError
 
     def __sub__(self, other: Interval) -> Interval:
         if other not in self:
