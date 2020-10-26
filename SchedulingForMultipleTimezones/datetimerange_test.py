@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 import pytz
 
-from SchedulingForMultipleTimezones.datetimerange import DateTimeRange, NegativeTimeRangeError
+from SchedulingForMultipleTimezones.datetimerange import DateTimeInterval, NegativeRangeError
 
 a_few_timezones = pytz.all_timezones[:10]
 
@@ -14,27 +14,27 @@ dt2 = datetime(2000, 1, 1, 2, 0, 0)
 dt3 = datetime(2000, 1, 1, 3, 0, 0)
 
 # assume wlog that l.start <= r.start
-left = DateTimeRange(start=dt0, end=dt2)
+left = DateTimeInterval(start=dt0, end=dt2)
 # Case A
 # [--l--]
 # [-r-]
-a_right = DateTimeRange(start=dt0, end=dt1)
+a_right = DateTimeInterval(start=dt0, end=dt1)
 a_intersect = a_right
 # Case B
 # [--l--]
 #   [-r-]
-b_right = DateTimeRange(start=dt1, end=dt2)
+b_right = DateTimeInterval(start=dt1, end=dt2)
 b_intersect = b_right
 # Case C
 # [--l--]
 #   [--r--]
-c_right = DateTimeRange(start=dt1, end=dt3)
-c_intersect = DateTimeRange(start=dt1, end=dt2)
+c_right = DateTimeInterval(start=dt1, end=dt3)
+c_intersect = DateTimeInterval(start=dt1, end=dt2)
 
 
 def test_negative_time_range_error():
-    with pytest.raises(NegativeTimeRangeError):
-        DateTimeRange(start=dt1, end=dt0)
+    with pytest.raises(NegativeRangeError):
+        DateTimeInterval(start=dt1, end=dt0)
 
 
 @pytest.mark.parametrize("dtrange", [pytest.param(dtrange, id=str(dtrange)) for dtrange in [

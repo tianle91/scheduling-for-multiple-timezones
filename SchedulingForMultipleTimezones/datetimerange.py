@@ -8,31 +8,37 @@ from dateutil.relativedelta import relativedelta
 fmt = '%Y-%m-%d %H:%M:%S %Z%z'
 
 
-class NegativeTimeRangeError(Exception):
+class NegativeRangeError(Exception):
     pass
 
 
-class DateTimeRange:
+class Interval:
 
-    def __init__(self, start: datetime, end: datetime):
+    def __init__(self, start, end):
         if end < start:
             # also raises errors for end, start comparison checks
-            raise NegativeTimeRangeError
+            raise NegativeRangeError
         self.start = start
         self.end = end
 
     def __str__(self):
-        return 'DateTimeRange {} --> {}'.format(self.start.strftime(fmt).strip(), self.end.strftime(fmt).strip())
+        return '{} --> {}'.format(self.start, self.end)
 
-    def __eq__(self, other: DateTimeRange) -> bool:
+    def __eq__(self, other: Interval) -> bool:
         return self.start == other.start and other.end == other.end
 
-    def intersection(self, other: DateTimeRange) -> Optional[DateTimeRange]:
+    def intersection(self, other: Interval) -> Optional[Interval]:
         """Intersection of two intervals is always an interval."""
         try:
-            return DateTimeRange(start=max(self.start, other.start), end=min(self.end, other.end))
-        except NegativeTimeRangeError:
+            return Interval(start=max(self.start, other.start), end=min(self.end, other.end))
+        except NegativeRangeError:
             return None
+
+
+class DateTimeInterval(Interval):
+
+    def __init__(self, start: datetime, end: datetime):
+        super().__init__(start, end)
 
     def range(self, step: Union[timedelta, relativedelta]):
         if not step >= timedelta(microseconds=0):
@@ -41,3 +47,27 @@ class DateTimeRange:
         while now <= self.end:
             yield now
             now += step
+
+
+def get_min_ordered_disjoint_covering(list_of_intervals: list[Interval]):
+    out_l = []
+    if len(list_of_intervals) == 1:
+        out_l = list_of_intervals[0]
+    else:
+        interval = list_of_intervals[0]
+        sub_l = get_min_ordered_disjoint_covering(list_of_intervals[1:])
+        out_l = None
+    return out_l
+
+
+class DateTimeIntervals:
+
+    def __init__(self, dtranges: set[DateTimeInterval]):
+        """Construct a minimal disjoint ordered set of intervals"""
+        pass
+
+    def intersection(self, other: DateTimeInterval) -> DateTimeInterval:
+        pass
+
+    def union(self, other: DateTimeInterval) -> DateTimeInterval:
+        pass
